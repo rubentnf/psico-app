@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { SessionTypesModule } from './session-types/session-types.module';
 import { AvailabilityModule } from './availability/availability.module';
 import { AppointmentsModule } from './appointments/appointments.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { AppointmentsModule } from './appointments/appointments.module';
     SessionTypesModule,
     AvailabilityModule,
     AppointmentsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

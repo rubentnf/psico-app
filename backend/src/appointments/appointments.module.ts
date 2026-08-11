@@ -7,11 +7,13 @@ import { WeeklyAvailabilityTemplate } from 'src/availability/entities/weekly-ava
 import { AvailabilityException } from 'src/availability/entities/availability-exception.entity';
 import { SessionType } from 'src/session-types/entities/session-type.entity';
 import { UsersModule } from 'src/users/users.module';
+import { NotificationsModule } from 'src/notifications/notifications.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Appointment, WeeklyAvailabilityTemplate, AvailabilityException, SessionType]),
     UsersModule,
+    NotificationsModule,
   ],
   controllers: [AppointmentsController],
   providers: [AppointmentsService]

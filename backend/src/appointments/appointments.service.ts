@@ -8,6 +8,7 @@ import { SessionType } from 'src/session-types/entities/session-type.entity';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 const CANCELLATION_FULL_REFUND_HOURS = 24;
 const CANCELLATION_PENALTY_RATE = 0.5;
@@ -24,6 +25,7 @@ export class AppointmentsService {
         @InjectRepository(SessionType)
         private readonly sessionTypeRepo: Repository<SessionType>,
         private readonly usersService: UsersService,
+        private readonly notificationsService: NotificationsService,
     ) { }
 
     // CÁLCULO DE HUECOS DISPONIBLES
@@ -171,7 +173,18 @@ export class AppointmentsService {
             priceCharged: sessionType.price,
         });
 
-        return this.appointmentRepo.save(appointment);
+        const saved = await this.appointmentRepo.save(appointment);
+
+        // Enviamos el email de forma asíncrona, sin bloquear la respuesta al usuario
+        this.notificationsService.sendBookingConfirmation({
+            to: patient.email,
+            patientName: patient.name,
+            sessionTypeName: sessionType.name,
+            startAt: saved.startAt,
+            price: saved.priceCharged,
+        });
+
+        return saved;
     }
 
     // CANCELAR CITA (con lógica de penalización)
@@ -201,7 +214,17 @@ export class AppointmentsService {
             appointment.priceCharged = (originalPrice * CANCELLATION_PENALTY_RATE).toFixed(2);
         }
 
-        return this.appointmentRepo.save(appointment);
+        const saved = await this.appointmentRepo.save(appointment);
+
+        this.notificationsService.sendCancellationNotice({
+            to: appointment.patient.email,
+            patientName: appointment.patient.name,
+            sessionTypeName: appointment.sessionType.name,
+            startAt: appointment.startAt,
+            penaltyApplied: penaltyApplies,
+        });
+
+        return saved;
     }
 
     async updateStatus(id: string, status: AppointmentStatus) {
