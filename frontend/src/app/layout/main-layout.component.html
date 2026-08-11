@@ -1,0 +1,24 @@
+<mat-toolbar color="primary">
+    <span>Psico App</span>
+    <span class="spacer"></span>
+
+    @if (authService.currentUser(); as user) {
+    <span class="user-name">{{ user.name}}</span>
+
+    @if (authService.isAdmin()) {
+    <a mat-button routerLink="/admin">Panel Admin</a>
+    } @else {
+    <a mat-button routerLink="/appointments">Reservar</a>
+    <a mat-button routerLink="/my-appointments">Mis citas</a>
+    }
+
+    <button mat-button (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Salir
+    </button>
+    }
+</mat-toolbar>
+
+<div class="content">
+    <router-outlet></router-outlet>
+</div>

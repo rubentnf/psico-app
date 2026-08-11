@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Confirmar reserva</h2>
+
+<mat-dialog-content>
+    <p><strong>{{data.sessionType.name}}</strong></p>
+    <p>{{data.dayLabel}} a las {{data.timeLabel}}</p>
+    <p>Duración: {{data.sessionType.durationMinutes}} min</p>
+    <p>Precio: {{ data.sessionType.price }} €</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancel()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="confirm()">Confirmar</button>
+</mat-dialog-actions>

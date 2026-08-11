@@ -1,0 +1,45 @@
+h2 {
+    margin-top: 24px;
+    margin-bottom: 12px;
+}
+
+.appointment-card {
+    margin-bottom: 12px;
+
+    &.past {
+        opacity: 0.75;
+    }
+}
+
+.appointment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.session-name {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.datetime {
+    text-transform: capitalize;
+    color: #616161;
+}
+
+.price {
+    font-weight: 500;
+    margin: 4px 0 12px;
+}
+
+.penalty-note {
+    color: #f57c00;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+.empty-message {
+    color: #757575;
+    font-style: italic;
+}

@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Cancelar cita</h2>
+
+<mat-dialog-content>
+    <p>
+        <strong>{{data.appointment.sessionType.name}}</strong>
+    </p>
+
+    @if (data.willHavePenalty) {
+    <p class="penalty-warning">
+        ⚠️ Al cancelar con menos de 24h de antelación, se aplicará una penalización del 50% sobre el precio de la
+        sesión.
+    </p>
+    } @else {
+    <p>Puedes cancelar </p>
+    }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancel()">Volver</button>
+    <button mat-raised-button color="warn" (click)="confirm()">Cancelar cita</button>
+</mat-dialog-actions>

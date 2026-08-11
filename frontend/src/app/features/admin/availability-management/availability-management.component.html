@@ -1,0 +1,124 @@
+<div class="availability-grid">
+    <section class="panel">
+        <h2>Horario semanal recurrente</h2>
+
+        <form [formGroup]="templateForm" class="template-form">
+            <mat-form-field appearance="outline">
+                <mat-label>Día</mat-label>
+                <mat-select formControlName="dayOfWeek">
+                    @for (day of dayNames; track $index) {
+                    <mat-option [value]="$index">{{day}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Desde</mat-label>
+                <input matInput type="time" formControlName="startTime" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Hasta</mat-label>
+                <input matInput type="time" formControlName="endTime" />
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="button" (click)="addTemplate()">
+                <mat-icon>add</mat-icon>
+                Añadir
+            </button>
+        </form>
+
+        @if (isLoadingTemplates()) {
+        <mat-spinner diameter="30"></mat-spinner>
+        } @else if (templates().length === 0) {
+        <p class="empty-message">Sin horario configurado todavía</p>
+        } @else {
+        <ul class="template-list">
+            @for (template of templates(); track template.id) {
+            <li>
+                <span>{{ dayNames[template.dayOfWeek] }}: {{ formatTime(template.startTime) }} - {{
+                    formatTime(template.endTime) }}</span>
+                <button mat-icon-button (click)="removeTemplate(template)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </li>
+            }
+        </ul>
+        }
+    </section>
+
+    <section class="panel">
+        <h2>Excepciones puntuales</h2>
+
+        <form [formGroup]="exceptionForm" class="exception-form">
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha</mat-label>
+                <input matInput [matDatepicker]="excPicker" formControlName="date" />
+                <mat-datepicker-toggle matIconSuffix [for]="excPicker"></mat-datepicker-toggle>
+                <mat-datepicker #excPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-radio-group formControlName="type" class="radio-group">
+                <mat-radio-button [value]="ExceptionType.BLOCKED">Bloquear (vacaciones, imprevisto)</mat-radio-button>
+                <mat-radio-button [value]="ExceptionType.EXTRA">Hueco extra</mat-radio-button>
+            </mat-radio-group>
+
+            <label class="checkbox-label">
+                <input type="checkbox" formControlName="fullDay" />
+                Día completo
+            </label>
+
+            @if (!exceptionForm.get('fullDay')?.value) {
+            <div class="time-row">
+                <mat-form-field appearance="outline">
+                    <mat-label>Desde</mat-label>
+                    <input matInput type="time" formControlName="startTime" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Hasta</mat-label>
+                    <input matInput type="time" formControlName="endTime" />
+                </mat-form-field>
+            </div>
+            }
+
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Motivo (opcional)</mat-label>
+                <input matInput formControlName="reason" />
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="button" (click)="addException()">
+                <mat-icon>add</mat-icon>
+                Añadir excepción
+            </button>
+        </form>
+
+        @if (isLoadingExceptions()) {
+        <mat-spinner diameter="30"></mat-spinner>
+        } @else if (exceptions().length === 0) {
+        <p class="empty-message">Sin excepciones en los próximos 3 meses</p>
+        } @else {
+        <ul class="exception-list">
+            @for (exception of exceptions(); track exception.id) {
+            <li [class.blocked]="exception.type === ExceptionType.BLOCKED">
+                <div>
+                    <strong>{{ formatExceptionDate(exception.date) }}</strong>
+                    <span class="badge">{{ exception.type === ExceptionType.BLOCKED ? 'Bloqueado' : 'Extra' }}</span>
+                    @if (exception.startTime && exception.endTime) {
+                    <span> — {{ formatTime(exception.startTime) }} a {{ formatTime(exception.endTime) }}</span>
+                    } @else {
+                    <span> — Día completo</span>
+                    }
+                    @if (exception.reason) {
+                    <p class="reason">{{ exception.reason }}</p>
+                    }
+                </div>
+                <button mat-icon-button (click)="removeException(exception)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </li>
+            }
+        </ul>
+        }
+    </section>
+</div>

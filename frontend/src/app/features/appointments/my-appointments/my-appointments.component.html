@@ -1,0 +1,52 @@
+<h1>Mis citas</h1>
+
+@if (isLoading()) {
+<mat-spinner diameter="30"></mat-spinner>
+} @else {
+<h2>Próximas</h2>
+@if (upcomingAppointments().length === 0) {
+<p class="empty-message">No tienes citas próximas</p>
+} @else {
+@for (appointment of upcomingAppointments(); track appointment.id) {
+<mat-card class="appointment-card">
+    <mat-card-content>
+        <div class="appointment-header">
+            <span class="session-name">{{appointment.sessionType.name }}</span>
+            <mat-chip-set>
+                <mat-chip>{{ statusLabel(appointment.status) }}</mat-chip>
+            </mat-chip-set>
+        </div>
+        <p class="datetime">{{ formatDateTime(appointment.startAt) }}</p>
+        <p class="price">{{ appointment.priceCharged }} €</p>
+
+        <button mat-stroked-button color="warn" [disabled]="cancellingId() === appointment.id"
+            (click)="openCancelDialog(appointment)">
+            Cancelar cita</button>
+    </mat-card-content>
+</mat-card>
+}
+}
+
+<h2>Historial</h2>
+@if (pastAppointments().length === 0) {
+<p class="empty-message">Aún no tienes historial</p>
+    } @else {
+        @for (appointment of pastAppointments(); track appointment.id) {
+        <mat-card class="appointment-card past">
+            <mat-card-content>
+                <div class="appointment-header">
+                    <span class="session-name">{{ appointment.sessionType.name}}</span>
+                    <mat-chip-set>
+                        <mat-chip>{{ statusLabel(appointment.status) }}</mat-chip>
+                    </mat-chip-set>
+                </div>
+                <p class="datetime">{{ formatDateTime(appointment.startAt) }}</p>
+                <p class="price">{{ appointment.priceCharged }}</p>
+                @if (appointment.cancellationPenaltyApplied) {
+                <p class="penalty-note">Se aplicó penalización por cancelación tardía</p>
+                }
+            </mat-card-content>
+        </mat-card>
+        }
+    }
+}

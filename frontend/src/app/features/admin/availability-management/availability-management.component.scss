@@ -1,0 +1,87 @@
+.availability-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.panel {
+    h2 {
+        margin-bottom: 16px;
+    }
+}
+
+.template-form,
+.exception-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+.time-row {
+    display: flex;
+    gap: 8px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 8px 0;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.template-list,
+.exception-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px;
+        border-bottom: 1px solid #e0e0e0;
+
+        &.blocked {
+            background: #fff3e0;
+        }
+    }
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    background: #e0e0e0;
+    margin-left: 8px;
+}
+
+.reason {
+    font-size: 0.85rem;
+    color: #757575;
+    margin: 4px 0 0;
+}
+
+.empty-message {
+    color: #757575;
+    font-style: italic;
+}
