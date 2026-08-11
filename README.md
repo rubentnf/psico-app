@@ -51,6 +51,13 @@ Proyecto desarrollado como pieza de portfolio para practicar un dominio con lóg
 
 Monorepo con backend y frontend en carpetas independientes, orquestados con Docker Compose para la base de datos.
 
+### Tests E2E
+
+\`\`\`bash
+npm run e2e        # ejecutar tests
+npm run e2e:ui     # modo interactivo
+\`\`\`
+
 ## Cómo levantar el proyecto en local
 
 ### Requisitos
